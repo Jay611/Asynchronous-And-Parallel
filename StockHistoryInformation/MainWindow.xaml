@@ -5,8 +5,58 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StockHistoryInformation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="stockInfoViewSource" d:DesignSource="{d:DesignInstance {x:Type local:StockInfo}, CreateList=True}"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource stockInfoViewSource}">
+        <ProgressBar Name="Progress" Minimum="0" Maximum="100" Width="200" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" Panel.ZIndex="5"/>
+        <TextBlock Name="ProgressText" Text="{Binding ElementName=Progress, Path=Value, StringFormat={}{0:0}%}" Foreground="Black"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Panel.ZIndex="7" />
+
+        <TextBox 
+            x:Name="SearchKeyTextBox"
+            HorizontalAlignment="Left" Height="30" Margin="50,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" />
+        <TextBlock FontSize="12" IsHitTestVisible="False" Text="Enter Search Key Here" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="50,20,0,0" Foreground="DarkGray">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=SearchKeyTextBox}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <Button Content="Search" Name="ButtonSearch" Click="ButtonSearch_Click" HorizontalAlignment="Left" Margin="220,20,0,0" VerticalAlignment="Top" Width="150" Height="30"/>
+        <Label Name="LabelAsyncResult" Content="" HorizontalAlignment="Left" Margin="390,20,0,0" VerticalAlignment="Top" Width="200" Height="30"/>
+
+        <DataGrid x:Name="stockInfoDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="50,74,262.333,9.667" RowDetailsVisibilityMode="VisibleWhenSelected" Panel.ZIndex="3">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="companyNameColumn" Binding="{Binding CompanyName}" Header="Company Name" Width="Auto"/>
+                <DataGridTextColumn x:Name="dateColumn" Binding="{Binding Date, StringFormat={} {0:MM/dd/yyyy}}" Header="Date" Width="Auto"/>
+                <DataGridTextColumn x:Name="openColumn" Binding="{Binding Open, StringFormat={} {0:c}}" Header="Open" Width="Auto" />
+                <DataGridTextColumn x:Name="highColumn" Binding="{Binding High, StringFormat={} {0:c}}" Header="High" Width="Auto"/>
+                <DataGridTextColumn x:Name="lowColumn" Binding="{Binding Low, StringFormat={} {0:c}}" Header="Low" Width="Auto"/>
+                <DataGridTextColumn x:Name="closeColumn" Binding="{Binding Close, StringFormat={} {0:c}}" Header="Close" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBox Name="TextBoxInput" Width="200" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,20,20,20"/>
+        <TextBlock FontSize="12" IsHitTestVisible="False" Text="Enter number Here" Width="200" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,20,20,20" Foreground="DarkGray">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=TextBoxInput}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        <TextBlock Name="TextBlockFactorialResult" Text="Result" Width="200" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,70,20,20"/>
+        <Button Name="ButtonFactorial" Click="ButtonFactorial_Click" Content="Factorial" Width="200" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,120,20,20"/>
     </Grid>
 </Window>
