@@ -126,10 +126,14 @@ namespace FlickrViewer
 
                 byte[] imageBytes = await flickrClient.GetByteArrayAsync(photo.URL);
                 byte[] resizedImageBytes = ResizeImage(imageBytes, 300);
-                string path = "C:\\Software Engineering\\2020 Winter\\Programming3\\Assignment\\301005189(Bae)_Lab5\\301005189(Bae)_Lab05\\FlickrViewer\\Images\\";
+                string root = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\"));
+                string folder = "Images\\";
+                if (!Directory.Exists(root + folder))
+                    Directory.CreateDirectory(root + folder);
+                
                 string filaName = Regex.Match(photo.URL, @"[^//]*$").Value;
 
-                File.WriteAllBytes(path + filaName, resizedImageBytes);
+                File.WriteAllBytes(root + folder + filaName, resizedImageBytes);
             });
         }
         //resizing images with width
