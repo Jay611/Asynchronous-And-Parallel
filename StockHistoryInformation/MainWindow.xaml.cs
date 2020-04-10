@@ -88,7 +88,7 @@ namespace StockHistoryInformation
         {
             LabelAsyncResult.Content = "Reading...";
 
-            string key = SearchKeyTextBox.Text;
+            string key = SearchKeyTextBox.Text.ToUpper();
             Task<IEnumerable<StockInfo>> searchTask = Task.Run(() => Search(key));
             await searchTask;
             stockInfoViewSource.Source = searchTask.Result;
@@ -108,16 +108,15 @@ namespace StockHistoryInformation
 
             for (int i = 0; i < total; i++)
             {
-                Thread.Sleep(10);
-                if (StockInfos.ElementAt(i).CompanyName.Contains(key))
+                Thread.Sleep(3);
+                if (StockInfos.ElementAt(i).CompanyName.ToUpper().Contains(key))
                 {
-                    result.Add(StockInfos.ElementAt(i));
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        Progress.Value = (i * 100 / total);
-                    });
-                    
+                    result.Add(StockInfos.ElementAt(i));                  
                 }
+                this.Dispatcher.Invoke(() =>
+                {
+                    Progress.Value = (i * 100 / total);
+                });
             }
 
             this.Dispatcher.Invoke(() =>
