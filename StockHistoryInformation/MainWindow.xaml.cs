@@ -75,9 +75,7 @@ namespace StockHistoryInformation
                     if (open < 0 || high < 0 || low < 0 || close < 0)
                         continue;
                     else
-                    {
                         StockInfos.Add(new StockInfo(data[0], DateTime.Parse(data[1]), open, high, low, close));
-                    }
                 }
             }
             catch(Exception e)
